@@ -1,7 +1,7 @@
 var express = require('express');
 
 // Constants
-var PORT = 8080;
+var PORT = 8081;
 
 // App
 var app = express();
@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 // =============================================================================
 var router = express.Router();              // get an instance of the express Router
 
-router.route('/thing/create/')
+router.route('/data/insert/')
 
     // create a thing (accessed at POST http://localhost:8080/api/thing/create)
     .post(function(req, res) {
@@ -22,7 +22,7 @@ router.route('/thing/create/')
         var thing = new Thing();      // create a new instance of the thing model
         thing.Subject = req.body.subject;  // set the thing name (comes from the request)
         thing.Status = req.body.Status;  // set the thing name (comes from the request)  // set the thing name (comes from the request)
-        thing.isSet = false;
+        thing.Data = req.body.Data;
 
         // save the thing and check for errors
         thing.save(function(err) {
@@ -43,43 +43,6 @@ router.route('/thing/create/')
 		});
 	});
 
-//
-router.route('/thing/set/:isSet')
-	// get all the things (accessed at GET http://localhost:8080/api/thing/set/:boolean)
-	.get(function(req, res) {
-		thing.find({isSet: req.params.isSet}, function(err, things) {
-			if (err)
-				res.send(err);
-
-			res.json(things);
-		});
-	});
-
-router.route('/thing/update/:thing_id')
-
-    // update the thing with this id (accessed at PUT http://localhost:8080/api/thing/update/:thing_id)
-    .put(function(req, res) {
-
-        // use our thing model to find the thing we want
-        thing.findById(req.params.thing_id, function(err, thing) {
-
-            if (err)
-                res.send(err);
-
-            thing.Subject = req.body.subject;  	// set the thing subject (comes from the request)
-        	thing.Status = req.body.Status;   // set the thing callStatus (comes from the request)
-
-
-            // save the thing
-            thing.save(function(err) {
-                if (err)
-                    res.send(err);
-
-                res.json({ message: 'thing updated!' });
-            });
-
-        });
-    });
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api/)
 router.get('/', function(req, res) {
@@ -118,5 +81,5 @@ console.log('Running on http://localhost:' + PORT);
 // =============================================================================
 
 var mongoose   = require('mongoose');
-mongoose.connect('mongodb://User:Pass@some-mongo:27017/thing');
+mongoose.connect('mongodb://User:Pass@208.82.232.55:27017/thing');
 var Thing     = require('./models/api');

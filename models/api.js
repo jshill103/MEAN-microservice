@@ -4,7 +4,7 @@ var Schema       = mongoose.Schema;
 var thingSchema   = new Schema({
     Subject: String,
     Status: String,
-    isSet: Boolean
+    Data: String
 });
 
 module.exports = mongoose.model('thing', thingSchema);
